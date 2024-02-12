@@ -108,13 +108,6 @@ def read_single_file(type_const, idx, use_prepared):
         file_w_path = PATH_STRUCTURE.format(DATA_FOLDER, type_const["folder_name"], idx, type_const["type_name"])
     else:
         file_w_path = PATH_STRUCTURE.format(PREPARED_DATA_FOLDER, type_const["folder_name"], idx, type_const["type_name"])
-        # try:
-        #     df = pd.read_csv(file_w_path, sep=type_const["separator"], header=None).astype("float")
-        #     return df
-        # except Exception as e:
-        #     print("Prepared data not found. original data will be loaded")
-        #     file_w_path = PATH_STRUCTURE.format(DATA_FOLDER, type_const["folder_name"], idx, type_const["type_name"])
-    
     return pd.read_csv(file_w_path, sep=type_const["separator"], header=None).astype("float")
     
     
@@ -152,29 +145,6 @@ def read_files(type, idx=None, use_prepared=False):
         return read_single_file(data_type, idx, use_prepared)
     for idx in subject_ids:
         ret_dict[idx] = read_single_file(data_type, idx, use_prepared)
-    
-    # if type == "motions":
-    #     if idx is not None:
-    #         return read_single_file(MOTIONS, idx)
-    #     for idx in subject_ids:
-    #         ret_dict[idx] = read_single_file(MOTIONS, idx)
-    # elif type == "steps":
-    #     if idx is not None:
-    #         return read_single_file(STEPS, idx)
-    #     for idx in subject_ids:
-    #         ret_dict[idx] = read_single_file(STEPS, idx)
-    # elif type == "labels":
-    #     if idx is not None:
-    #         return read_single_file(LABELS, idx)
-    #     for idx in subject_ids:
-    #         ret_dict[idx] = read_single_file(LABELS, idx)
-    # elif type == "heart_rates":
-    #     if idx is not None:
-    #         return read_single_file(HEART_RATES, idx)
-    #     for idx in subject_ids:
-    #         ret_dict[idx] = read_single_file(HEART_RATES, idx)
-    # else:
-    #     raise KeyError("{} feature set type not found in [motions, steps, labels, heart_rates]".format(type))
     return ret_dict
 
 

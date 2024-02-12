@@ -14,6 +14,8 @@ class Subject:
         self.step = step
 
     def plot(self):
+        """Plots data for analysis
+        """
         fig = plt.figure()
         ax = plt.subplot(111)
         pd.DataFrame(self.label.prepared_data[1]).plot(ax=ax)
@@ -25,6 +27,8 @@ class Subject:
         fig.savefig('figs/full_figure_{}.png'.format(self.id))
 
     def save_normalized_data(self):
+        """Saves normalized data, so in the future do not have to wait half a day for it 
+        """
         save_data_frame("motions", self.motion.normalized_data, self.id)
         save_data_frame("labels", self.label.prepared_data, self.id)
         save_data_frame("steps", self.step.normalized_data, self.id)
@@ -34,6 +38,18 @@ class Subject:
             self.id)
 
     def subject_data(self, with_motion=True):
+        """Collects all data from the dataset
+
+        Parameters
+        ----------
+        with_motion : bool, optional
+            sometimes in the motion feature there are a lot of missing values, so there is an option to cut it out fully, but do not really recommend, by default True
+
+        Returns
+        -------
+        pandas.DataFrame
+            All normalized data, collected in one huge dataset
+        """
         num_samples = self.label.prepared_data.shape[0]
         data = {
             "subject_id": [self.id] * num_samples,
@@ -47,6 +63,18 @@ class Subject:
         return pd.DataFrame(data)
 
     def subject_data_cut_at_last_measured(self, feature_type):
+        """Sometimes in the motion feature there are a lot of missing values, so there is an option to cut it out partially ('till there are measurements)
+
+        Parameters
+        ----------
+        feature_type : str
+            name of feature to cut
+
+        Returns
+        -------
+        pandas.DataFrame
+            Measured feature data
+        """
         data = self.subject_data()
         if feature_type == "motion":
             last_idx = self.motion.find_last_measured_data(0)
